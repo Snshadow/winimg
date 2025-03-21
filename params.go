@@ -220,13 +220,13 @@ type WimCaptureOpts struct {
 	// disable automatic path fixups for junctions or symbolic
 	// links
 	NoReparseFix bool
-	// disable restoring security information for directories
+	// disable capturing security information for directories
 	NoDirAcl bool
-	// disable restoring srcurity information for files
+	// disable capturing security information for files
 	NoFileAcl bool
 	// format image to install on WIMBoot
 	WIMBoot bool
-	// apply image with extended attributes(EA)
+	// capture image with extended attributes(EA)
 	SupportEa bool
 }
 

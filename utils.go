@@ -48,7 +48,7 @@ func DefaultCompressionExclusion() []string {
 //
 // https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/dism-configuration-list-and-wimscriptini-files-winnext#exclusion-list-guidelines
 func ShouldExclude(fileName string, pattern string) bool {
-	// normalize paths to use forward slashes and make case-insensitive
+	// make case-insensitive for comparsion
 	fileName = strings.ToLower(fileName)
 	pattern = strings.ToLower(pattern)
 

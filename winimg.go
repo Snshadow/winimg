@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"golang.org/x/sys/windows"
@@ -26,6 +27,8 @@ var (
 var (
 	// do not run DismInitialize when it is already initialized for a process
 	dismInitialized bool
+	dismMutex       sync.Mutex
+
 	// default to information level
 	dismLogLevel = dismapi.DismLogErrorsWarningsInfo
 	// use working directory by default
@@ -46,6 +49,9 @@ func ConfigureDism(logLevel dismapi.DismLogLevel, logPath, scratchDir string) {
 
 // initDism initalizes DISM API with global settings.
 func initDism() error {
+	dismMutex.Lock()
+	defer dismMutex.Unlock()
+
 	if !dismInitialized {
 		err := dismapi.DismInitialize(dismLogLevel, dismLogPath, dismScratchDir)
 		// returns DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED if already initialized
@@ -966,8 +972,9 @@ func (w *WimImageFile) UnregisterMessageCallback(callback uintptr) error {
 	return wimgapi.WIMUnregisterMessageCallback(w.handle, callback)
 }
 
-// Close cleans up all mount points and volume image handles, note that
-// this will discard changes in mount points created with Mount().
+// Close cleans up all mount points and volume image handles and
+// unregisters all callbacks, note that this will discard changes
+// made in mount points created with Mount().
 func (w *WimImageFile) Close() error {
 	// unregister all callback functions
 	err := wimgapi.WIMUnregisterMessageCallback(w.handle, 0)
@@ -1003,7 +1010,7 @@ func (w *WimImageFile) Close() error {
 }
 
 // MountWimImage mounts an image with mount path, .wim file path and image
-// index, is tempPath is empty, the image will not be mounted for edits.
+// index, if tempPath is empty, the image will not be mounted for edits.
 func MountWimImage(mountPath, imageFilePath string, imageIndex uint32, tempPath string) error {
 	err := wimgapi.WIMMountImage(mountPath, imageFilePath, imageIndex, tempPath)
 	if err != nil {
