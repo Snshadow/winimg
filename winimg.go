@@ -1045,13 +1045,13 @@ func RemountWimImage(mountPath string, opts *WimRemountOpts) error {
 	return nil
 }
 
-type WinImage struct {
-	filePath string
+// type WinImage struct {
+// 	filePath string
 
-	DismImage *DismImageFile
-	WimImage  *WimImageFile
-}
+// 	DismImage *DismImageFile
+// 	WimImage  *WimImageFile
+// }
 
-func (w *WinImage) Path() string {
-	return w.filePath
-}
+// func (w *WinImage) Path() string {
+// 	return w.filePath
+// }
