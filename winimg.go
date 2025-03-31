@@ -59,7 +59,6 @@ func initDism() error {
 			dismapi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED {
 			return err
 		}
-
 		dismInitialized = true
 	}
 
@@ -525,6 +524,7 @@ func (d *DismImageFile) Close() error {
 
 	curDismImg.Remove(d)
 
+	dismMutex.Lock()
 	if dismInitialized && curDismImg.IsEmpty() {
 		// shutdown DISM API if it is no longer used
 		shutdownErr := dismapi.DismShutdown()
@@ -535,6 +535,7 @@ func (d *DismImageFile) Close() error {
 			dismInitialized = false
 		}
 	}
+	dismMutex.Unlock()
 
 	return err
 }
@@ -1045,13 +1046,13 @@ func RemountWimImage(mountPath string, opts *WimRemountOpts) error {
 	return nil
 }
 
-// type WinImage struct {
-// 	filePath string
+type WinImage struct {
+	filePath string
 
-// 	DismImage *DismImageFile
-// 	WimImage  *WimImageFile
-// }
+	DismImage *DismImageFile
+	WimImage  *WimImageFile
+}
 
-// func (w *WinImage) Path() string {
-// 	return w.filePath
-// }
+func (w *WinImage) Path() string {
+	return w.filePath
+}

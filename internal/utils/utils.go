@@ -106,12 +106,20 @@ func StrSliceToUtf16PtrArr(strSlice []string) ([]*uint16, error) {
 
 func PZZWSTRToStrings(pzzwstr **uint16) []string {
 	result := make([]string, 0)
+	if pzzwstr == nil || *pzzwstr == nil {
+		return result
+	}
 	bufPtr := *pzzwstr
 
 	for *bufPtr != 0 {
+		length := 0
+		for ptr := bufPtr; *ptr != 0; ptr = (*uint16)(unsafe.Add(unsafe.Pointer(ptr), 2)) {
+			length++
+		}
+
 		result = append(result, windows.UTF16PtrToString(bufPtr))
 
-		bufPtr = (*uint16)(unsafe.Add(unsafe.Pointer(bufPtr), (len(result)+1)*2))
+		bufPtr = (*uint16)(unsafe.Add(unsafe.Pointer(bufPtr), (length+1)*2))
 	}
 
 	return result

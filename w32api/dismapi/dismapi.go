@@ -1,4 +1,4 @@
-// Package dismapi implements Deployment Image Servicing and Management (DISM) API.
+// Package dismapi calls Deployment Image Servicing and Management (DISM) API.
 //
 // https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/dism/dism-api-reference
 package dismapi

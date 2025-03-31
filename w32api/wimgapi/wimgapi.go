@@ -1,4 +1,4 @@
-// Package wimgapi implements Windows Imaging Interface library.
+// Package wimgapi calls Windows Imaging Interface library api.
 //
 // https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/wim/dd851927(v=msdn.10)
 package wimgapi
