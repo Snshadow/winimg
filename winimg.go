@@ -426,6 +426,9 @@ func (d *DismImageFile) Mount(mountPath string, imageIndex uint32, opts *DismMou
 	if o.CheckIntegrity {
 		flags |= dismapi.DISM_MOUNT_CHECK_INTEGRITY
 	}
+	if o.SupportEa {
+		flags |= dismapi.DISM_MOUNT_SUPPORT_EA
+	}
 
 	if err := dismapi.DismMountImage(d.imageFilePath, mountPath, imageIndex,
 		o.ImageName, identifier, flags, o.CancelEvent, o.Progress,

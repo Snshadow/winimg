@@ -36,8 +36,11 @@ type DismProgressOpts struct {
 // DismMountOpts contains options used for mounting DISM image.
 type DismMountOpts struct {
 	// if not empty, used instead of image index
-	ImageName                          string
-	ReadOnly, Optimize, CheckIntegrity bool
+	ImageName      string
+	ReadOnly       bool
+	Optimize       bool
+	CheckIntegrity bool
+	SupportEa      bool
 	DismProgressOpts
 }
 
