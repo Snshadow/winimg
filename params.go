@@ -10,7 +10,7 @@ import (
 )
 
 // NewDismProgress creates callback function to be
-// used get information of DISM operation progress.
+// used to get information of DISM operation progress.
 func NewDismProgress(cb dismapi.DismProgressCallback) uintptr {
 	return windows.NewCallback(cb)
 }
