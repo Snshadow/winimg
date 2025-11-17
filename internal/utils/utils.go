@@ -55,9 +55,10 @@ func GetErrorMessage(errno uint32, module uintptr) string {
 
 	defer windows.LocalFree(windows.Handle(uintptr(unsafe.Pointer(b))))
 
+	buf = unsafe.Slice(b, n)
 	for ; n > 0 && buf[n-1] == '\n' || buf[n-1] == '\r'; n-- {
 	}
-	return windows.UTF16ToString(unsafe.Slice(b, n))
+	return windows.UTF16ToString(buf[:n])
 }
 
 // HresultToError parses HRESULT to error value for comparision
